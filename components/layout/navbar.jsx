@@ -2,10 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Menu } from "lucide-react";
 import { navLinks } from "@/content/navigation";
-import { MobileMenu } from "@/components/layout/mobile-menu";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+
+const MobileMenu = dynamic(
+  () => import("@/components/layout/mobile-menu").then((m) => m.MobileMenu),
+  { ssr: false },
+);
 
 export function Navbar() {
   const [activeSection, setActiveSection] = useState(null);
