@@ -92,7 +92,7 @@ export function Hero() {
                 </ButtonLink>
               </Magnetic>
               <ButtonLink
-                href="/cv/Bereket_Elias_CV.pdf"
+                href="/api/resume/download?source=hero"
                 variant="secondary"
                 size="lg"
                 download
