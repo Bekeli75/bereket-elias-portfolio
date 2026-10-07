@@ -306,7 +306,7 @@ export function Contact() {
 
           <aside className="space-y-6">
             <div className="card p-6">
-              <p className="eyebrow !mb-3">Direct</p>
+              <p className="eyebrow mb-3">Direct</p>
               <div className="flex items-center justify-between gap-3">
                 <a
                   href={`mailto:${profile.email}`}
@@ -332,7 +332,7 @@ export function Contact() {
 
             {socials.length > 0 && (
               <div className="card p-6">
-                <p className="eyebrow !mb-3">Elsewhere</p>
+                <p className="eyebrow mb-3">Elsewhere</p>
                 <div className="flex flex-wrap gap-2">
                   {socials.map(({ key, label, href }) => (
                     <a
@@ -351,7 +351,7 @@ export function Contact() {
             )}
 
             <div className="card p-6">
-              <p className="eyebrow !mb-3">Availability</p>
+              <p className="eyebrow mb-3">Availability</p>
               <p className="text-sm text-muted">{profile.availability.label}</p>
               <p className="mt-2 text-sm text-muted">
                 {profile.location}
