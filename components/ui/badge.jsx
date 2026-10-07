@@ -1,25 +1,11 @@
-import type { ReactNode } from "react";
-
-type Tone = "accent" | "success" | "warn" | "neutral";
-
-const tones: Record<Tone, string> = {
+const tones = {
   accent: "border-accent/30 bg-accent/10 text-accent",
   success: "border-accent-2/30 bg-accent-2/10 text-accent-2",
   warn: "border-warn/30 bg-warn/10 text-warn",
   neutral: "border-line bg-surface-2 text-muted",
 };
 
-export function Badge({
-  tone = "neutral",
-  dot = false,
-  children,
-  className,
-}: {
-  tone?: Tone;
-  dot?: boolean;
-  children: ReactNode;
-  className?: string;
-}) {
+export function Badge({ tone = "neutral", dot = false, children, className }) {
   return (
     <span
       className={[

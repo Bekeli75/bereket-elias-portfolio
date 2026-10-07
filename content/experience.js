@@ -1,12 +1,4 @@
-export type Role = {
-  company: string;
-  role: string;
-  start: string;
-  end: string;
-  bullets: string[];
-};
-
-export const experience: Role[] = [
+export const experience = [
   {
     company: "MOHA Soft Drinks Industry S.C",
     role: "Apprentice",

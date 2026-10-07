@@ -2,31 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-type GraphNode = {
-  x: number;
-  y: number;
-  r: number;
-  hub: boolean;
-  phase: number;
-};
-
-type Edge = { a: number; b: number };
-
-type Packet = {
-  edge: number;
-  t: number;
-  speed: number;
-  colorIndex: 0 | 1;
-};
-
-type Palette = {
-  accent: string;
-  accent2: string;
-  muted: string;
-  border: string;
-};
-
-function readPalette(): Palette {
+function readPalette() {
   const styles = getComputedStyle(document.documentElement);
   return {
     accent: styles.getPropertyValue("--accent").trim() || "#4F8CFF",
@@ -36,9 +12,9 @@ function readPalette(): Palette {
   };
 }
 
-function buildGraph(width: number, height: number) {
+function buildGraph(width, height) {
   const count = width < 480 ? 18 : width < 900 ? 24 : 30;
-  const nodes: GraphNode[] = [];
+  const nodes = [];
   const rand = Math.random;
 
   for (let i = 0; i < count; i++) {
@@ -52,7 +28,7 @@ function buildGraph(width: number, height: number) {
   }
 
   const linkDistance = Math.min(width, height) * 0.3;
-  const edges: Edge[] = [];
+  const edges = [];
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
       const dx = (nodes[i].x - nodes[j].x) * width;
@@ -74,8 +50,8 @@ function buildGraph(width: number, height: number) {
   return { nodes, edges };
 }
 
-export default function NetworkCanvas({ className }: { className?: string }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+export default function NetworkCanvas({ className }) {
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -89,9 +65,9 @@ export default function NetworkCanvas({ className }: { className?: string }) {
     let reduced = motionQuery.matches;
 
     let palette = readPalette();
-    let nodes: GraphNode[] = [];
-    let edges: Edge[] = [];
-    let packets: Packet[] = [];
+    let nodes = [];
+    let edges = [];
+    let packets = [];
     let width = 0;
     let height = 0;
     let rafId = 0;
@@ -112,10 +88,10 @@ export default function NetworkCanvas({ className }: { className?: string }) {
       );
     };
 
-    const draw = (now: number, dt: number) => {
+    const draw = (now, dt) => {
       context.clearRect(0, 0, width, height);
 
-      const point = (node: GraphNode) => ({
+      const point = (node) => ({
         x: node.x * width,
         y: node.y * height,
       });
@@ -215,7 +191,7 @@ export default function NetworkCanvas({ className }: { className?: string }) {
       draw(performance.now(), 0);
     };
 
-    const frame = (now: number) => {
+    const frame = (now) => {
       if (!running) return;
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
@@ -255,7 +231,7 @@ export default function NetworkCanvas({ className }: { className?: string }) {
     };
     document.addEventListener("visibilitychange", onVisibility);
 
-    const onPointerMove = (event: PointerEvent) => {
+    const onPointerMove = (event) => {
       const rect = canvas.getBoundingClientRect();
       pointer.x = event.clientX - rect.left;
       pointer.y = event.clientY - rect.top;
@@ -276,7 +252,7 @@ export default function NetworkCanvas({ className }: { className?: string }) {
       attributeFilter: ["data-theme"],
     });
 
-    const onMotionChange = (event: MediaQueryListEvent) => {
+    const onMotionChange = (event) => {
       reduced = event.matches;
       if (reduced) {
         stop();

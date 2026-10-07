@@ -1,21 +1,13 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
-
-type StaggerProps = {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-  stagger?: number;
-};
 
 export function Stagger({
   children,
   className,
   delay = 0,
   stagger = 0.06,
-}: StaggerProps) {
+}) {
   const reduceMotion = useReducedMotion();
 
   if (reduceMotion) {
@@ -40,13 +32,7 @@ export function Stagger({
   );
 }
 
-export function StaggerItem({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function StaggerItem({ children, className }) {
   const reduceMotion = useReducedMotion();
 
   if (reduceMotion) {

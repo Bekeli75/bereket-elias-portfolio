@@ -1,10 +1,10 @@
 import { SectionHeader } from "@/components/ui/section-header";
-import { Timeline, type TimelineItem } from "@/components/ui/timeline";
+import { Timeline } from "@/components/ui/timeline";
 import { Reveal } from "@/components/motion/reveal";
 import { experience } from "@/content/experience";
 import { education } from "@/content/education";
 
-const educationItems: TimelineItem[] = education.map((entry) => ({
+const educationItems = education.map((entry) => ({
   date: `${entry.start} – ${entry.end} (${entry.status})`,
   title: entry.degree,
   subtitle: entry.institution,
@@ -16,7 +16,7 @@ const educationItems: TimelineItem[] = education.map((entry) => ({
   ),
 }));
 
-const experienceItems: TimelineItem[] = experience.map((role) => ({
+const experienceItems = experience.map((role) => ({
   date: `${role.start} – ${role.end}`,
   title: role.role,
   subtitle: role.company,

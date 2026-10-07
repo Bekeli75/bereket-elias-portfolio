@@ -7,45 +7,34 @@ import {
   useEffect,
   useMemo,
   useState,
-  type ReactNode,
 } from "react";
-
-export type ThemeMode = "dark" | "light" | "system";
-export type ResolvedTheme = "dark" | "light";
 
 const STORAGE_KEY = "theme";
 
-type ThemeContextValue = {
-  mode: ThemeMode;
-  resolved: ResolvedTheme;
-  setMode: (mode: ThemeMode) => void;
-  cycleMode: () => void;
-};
+const ThemeContext = createContext(null);
 
-const ThemeContext = createContext<ThemeContextValue | null>(null);
-
-function systemTheme(): ResolvedTheme {
+function systemTheme() {
   if (typeof window === "undefined" || !window.matchMedia) return "dark";
   return window.matchMedia("(prefers-color-scheme: light)").matches
     ? "light"
     : "dark";
 }
 
-function resolve(mode: ThemeMode): ResolvedTheme {
+function resolve(mode) {
   return mode === "system" ? systemTheme() : mode;
 }
 
-function applyTheme(resolved: ResolvedTheme) {
+function applyTheme(resolved) {
   document.documentElement.setAttribute("data-theme", resolved);
 }
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [mode, setModeState] = useState<ThemeMode>("system");
-  const [resolved, setResolved] = useState<ResolvedTheme>("dark");
+export function ThemeProvider({ children }) {
+  const [mode, setModeState] = useState("system");
+  const [resolved, setResolved] = useState("dark");
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY) as ThemeMode | null;
-    const initial: ThemeMode =
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    const initial =
       stored === "dark" || stored === "light" || stored === "system"
         ? stored
         : "system";
@@ -67,9 +56,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [mode]);
 
   useEffect(() => {
-    const onStorage = (event: StorageEvent) => {
+    const onStorage = (event) => {
       if (event.key !== STORAGE_KEY) return;
-      const next = (event.newValue as ThemeMode) || "system";
+      const next = event.newValue || "system";
       setModeState(next);
       const r = resolve(next);
       setResolved(r);
@@ -79,7 +68,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  const setMode = useCallback((next: ThemeMode) => {
+  const setMode = useCallback((next) => {
     setModeState(next);
     window.localStorage.setItem(STORAGE_KEY, next);
     const r = resolve(next);
@@ -89,7 +78,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const cycleMode = useCallback(() => {
     setModeState((current) => {
-      const next: ThemeMode =
+      const next =
         current === "dark" ? "light" : current === "light" ? "system" : "dark";
       window.localStorage.setItem(STORAGE_KEY, next);
       const r = resolve(next);

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
@@ -28,7 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: {
     default: `${profile.name} — ${profile.title}`,
     template: `%s · ${profile.name}`,
@@ -36,11 +35,7 @@ export const metadata: Metadata = {
   description: profile.summary,
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

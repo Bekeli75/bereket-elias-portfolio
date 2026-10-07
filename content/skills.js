@@ -1,17 +1,5 @@
-export type SkillLevel = "familiar" | "working" | "strong";
-
-export type Skill = {
-  name: string;
-  level: SkillLevel;
-};
-
-export type SkillCategory = {
-  name: string;
-  items: Skill[];
-};
-
 // Level labels are honest self-assessments — TODO(owner): confirm or adjust.
-export const skillCategories: SkillCategory[] = [
+export const skillCategories = [
   {
     name: "Networking",
     items: [

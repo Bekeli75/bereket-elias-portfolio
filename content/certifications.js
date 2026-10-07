@@ -1,12 +1,5 @@
-export type Certification = {
-  title: string;
-  issuer: string;
-  url: string | null;
-  credentialId: string | null;
-};
-
 // TODO(owner): add verification URLs / credential IDs when available.
-export const certifications: Certification[] = [
+export const certifications = [
   {
     title: "Cisco Certified Network Associate (CCNA)",
     issuer: "Cisco",

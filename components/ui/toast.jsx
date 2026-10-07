@@ -7,40 +7,27 @@ import {
   useMemo,
   useRef,
   useState,
-  type ReactNode,
 } from "react";
 import { X } from "lucide-react";
 
-type ToastVariant = "success" | "error" | "info";
+const ToastContext = createContext(null);
 
-type Toast = {
-  id: number;
-  message: string;
-  variant: ToastVariant;
-};
-
-type ToastContextValue = {
-  toast: (message: string, variant?: ToastVariant) => void;
-};
-
-const ToastContext = createContext<ToastContextValue | null>(null);
-
-const styles: Record<ToastVariant, string> = {
+const styles = {
   success: "border-accent-2/40 text-accent-2",
   error: "border-warn/40 text-warn",
   info: "border-accent/40 text-accent",
 };
 
-export function ToastProvider({ children }: { children: ReactNode }) {
-  const [toasts, setToasts] = useState<Toast[]>([]);
+export function ToastProvider({ children }) {
+  const [toasts, setToasts] = useState([]);
   const nextId = useRef(1);
 
-  const dismiss = useCallback((id: number) => {
+  const dismiss = useCallback((id) => {
     setToasts((current) => current.filter((item) => item.id !== id));
   }, []);
 
   const toast = useCallback(
-    (message: string, variant: ToastVariant = "info") => {
+    (message, variant = "info") => {
       const id = nextId.current++;
       setToasts((current) => [...current, { id, message, variant }]);
       window.setTimeout(() => dismiss(id), 4500);

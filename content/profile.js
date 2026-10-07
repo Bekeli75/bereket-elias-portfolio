@@ -16,6 +16,4 @@ export const profile = {
     linkedin: "",
     telegram: "",
   },
-} as const;
-
-export type Profile = typeof profile;
+};

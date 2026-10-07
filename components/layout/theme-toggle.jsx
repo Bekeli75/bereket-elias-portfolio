@@ -7,13 +7,13 @@ const labels = {
   dark: "Dark",
   light: "Light",
   system: "System",
-} as const;
+};
 
 const icons = {
   dark: Moon,
   light: Sun,
   system: Monitor,
-} as const;
+};
 
 export function ThemeToggle() {
   const { mode, cycleMode } = useTheme();

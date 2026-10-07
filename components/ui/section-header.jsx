@@ -1,18 +1,10 @@
-type SectionHeaderProps = {
-  eyebrow: string;
-  title: string;
-  description?: string;
-  align?: "left" | "center";
-  id?: string;
-};
-
 export function SectionHeader({
   eyebrow,
   title,
   description,
   align = "left",
   id,
-}: SectionHeaderProps) {
+}) {
   return (
     <div
       className={[

@@ -2,9 +2,9 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/motion/reveal";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
-import { skillCategories, type SkillLevel } from "@/content/skills";
+import { skillCategories } from "@/content/skills";
 
-const spans: Record<string, string> = {
+const spans = {
   Networking: "lg:col-span-2",
   Programming: "lg:col-span-2",
   Foundations: "lg:col-span-1",
@@ -12,7 +12,7 @@ const spans: Record<string, string> = {
   Tools: "lg:col-span-2",
 };
 
-const levelStyles: Record<SkillLevel, string> = {
+const levelStyles = {
   familiar: "text-muted",
   working: "text-accent",
   strong: "text-accent-2",

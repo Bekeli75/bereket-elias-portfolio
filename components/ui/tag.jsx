@@ -1,12 +1,4 @@
-import type { ReactNode } from "react";
-
-export function Tag({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function Tag({ children, className }) {
   return (
     <span
       className={[

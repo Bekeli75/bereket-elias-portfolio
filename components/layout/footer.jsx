@@ -1,10 +1,10 @@
 "use client";
 
 import { ArrowUp, Mail } from "lucide-react";
-import { BrandIcon, type BrandName } from "@/components/ui/brand-icons";
+import { BrandIcon } from "@/components/ui/brand-icons";
 import { profile } from "@/content/profile";
 
-const allSocials: { key: BrandName; label: string; href: string }[] = [
+const allSocials = [
   { key: "github", label: "GitHub", href: profile.socials.github },
   { key: "linkedin", label: "LinkedIn", href: profile.socials.linkedin },
   { key: "telegram", label: "Telegram", href: profile.socials.telegram },

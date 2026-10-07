@@ -1,25 +1,11 @@
 "use client";
 
-import { useId, type InputHTMLAttributes, type TextareaHTMLAttributes } from "react";
+import { useId } from "react";
 
 const fieldClasses =
   "w-full rounded-[var(--radius-sm)] border border-line bg-surface px-4 py-3 text-ink placeholder:text-muted/70 transition-colors focus:border-accent focus:outline-none disabled:opacity-60";
 
-type FieldWrapperProps = {
-  label: string;
-  error?: string;
-  hint?: string;
-  htmlFor: string;
-  children: React.ReactNode;
-};
-
-function FieldWrapper({
-  label,
-  error,
-  hint,
-  htmlFor,
-  children,
-}: FieldWrapperProps) {
+function FieldWrapper({ label, error, hint, htmlFor, children }) {
   return (
     <div className="flex flex-col gap-1.5">
       <label
@@ -40,25 +26,10 @@ function FieldWrapper({
   );
 }
 
-export function Input({
-  label,
-  error,
-  hint,
-  className,
-  ...rest
-}: InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
-  error?: string;
-  hint?: string;
-}) {
+export function Input({ label, error, hint, className, ...rest }) {
   const id = useId();
   return (
-    <FieldWrapper
-      label={label}
-      error={error}
-      hint={hint}
-      htmlFor={id}
-    >
+    <FieldWrapper label={label} error={error} hint={hint} htmlFor={id}>
       <input
         id={id}
         aria-invalid={Boolean(error)}
@@ -76,10 +47,6 @@ export function Textarea({
   className,
   rows = 6,
   ...rest
-}: TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  label: string;
-  error?: string;
-  hint?: string;
 }) {
   const id = useId();
   return (

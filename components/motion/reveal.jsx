@@ -1,16 +1,8 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
-type RevealProps = {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-  y?: number;
-};
-
-export function Reveal({ children, className, delay = 0, y = 24 }: RevealProps) {
+export function Reveal({ children, className, delay = 0, y = 24 }) {
   const reduceMotion = useReducedMotion();
 
   if (reduceMotion) {

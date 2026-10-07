@@ -4,19 +4,12 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { navLinks } from "@/content/navigation";
 
-type MobileMenuProps = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  activeSection: string | null;
-  onNavigate?: () => void;
-};
-
 export function MobileMenu({
   open,
   onOpenChange,
   activeSection,
   onNavigate,
-}: MobileMenuProps) {
+}) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -51,12 +44,12 @@ export function MobileMenu({
                         onNavigate?.();
                         onOpenChange(false);
                       }}
+                      aria-current={isActive ? "location" : undefined}
                       className={`block rounded-[var(--radius-sm)] px-3 py-3 text-lg font-medium transition-colors ${
                         isActive
                           ? "bg-surface-2 text-accent"
                           : "text-ink hover:bg-surface-2 hover:text-accent"
                       }`}
-                      {...(isActive ? { "aria-current": "location" as const } : {})}
                     >
                       {link.label}
                     </a>

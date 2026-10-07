@@ -1,14 +1,4 @@
-export type Education = {
-  institution: string;
-  degree: string;
-  specialization: string;
-  start: number;
-  end: number;
-  status: "expected" | "completed";
-  note: string;
-};
-
-export const education: Education[] = [
+export const education = [
   {
     institution: "Addis Ababa Science and Technology University",
     degree: "BSc Electrical and Computer Engineering",

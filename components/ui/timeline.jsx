@@ -1,13 +1,4 @@
-import type { ReactNode } from "react";
-
-export type TimelineItem = {
-  date: string;
-  title: string;
-  subtitle?: string;
-  body?: ReactNode;
-};
-
-export function Timeline({ items }: { items: TimelineItem[] }) {
+export function Timeline({ items }) {
   return (
     <ol className="relative space-y-10 border-l border-line pl-6 md:pl-8">
       {items.map((item, index) => (

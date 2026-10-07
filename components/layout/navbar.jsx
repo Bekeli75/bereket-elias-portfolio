@@ -8,7 +8,7 @@ import { MobileMenu } from "@/components/layout/mobile-menu";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 export function Navbar() {
-  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -22,10 +22,10 @@ export function Navbar() {
   useEffect(() => {
     const ids = navLinks
       .map((link) => link.sectionId)
-      .filter((id): id is string => Boolean(id) && id !== "top");
+      .filter((id) => Boolean(id) && id !== "top");
     const elements = ids
       .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
+      .filter((el) => el !== null);
     if (elements.length === 0) return;
 
     const observer = new IntersectionObserver(

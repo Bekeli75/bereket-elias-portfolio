@@ -1,10 +1,4 @@
-export type NavLink = {
-  label: string;
-  href: string;
-  sectionId?: string;
-};
-
-export const navLinks: NavLink[] = [
+export const navLinks = [
   { label: "Home", href: "/", sectionId: "top" },
   { label: "About", href: "/#about", sectionId: "about" },
   { label: "Skills", href: "/#skills", sectionId: "skills" },

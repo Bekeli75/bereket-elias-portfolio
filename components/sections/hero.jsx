@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { ArrowDown, Download } from "lucide-react";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Magnetic } from "@/components/motion/magnetic";
@@ -21,7 +21,7 @@ const NetworkCanvas = dynamic(
   },
 );
 
-const fadeUp: Variants = {
+const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: {
     opacity: 1,
@@ -30,7 +30,7 @@ const fadeUp: Variants = {
   },
 };
 
-const container: Variants = {
+const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
 };
