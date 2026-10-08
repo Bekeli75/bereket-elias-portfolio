@@ -64,12 +64,12 @@ export async function POST(request) {
   const ipKey = hashIp(ip);
 
   // Contract: 5 requests / hour / IP, plus 20 / day globally.
-  const perIp = rateLimit({
+  const perIp = await rateLimit({
     key: `contact:ip:${ipKey}`,
     limit: 5,
     windowMs: 60 * 60 * 1000,
   });
-  const perDay = rateLimit({
+  const perDay = await rateLimit({
     key: "contact:global:day",
     limit: 20,
     windowMs: 24 * 60 * 60 * 1000,
