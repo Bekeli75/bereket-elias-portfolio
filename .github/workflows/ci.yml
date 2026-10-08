@@ -30,6 +30,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Bundle budget (150 kB gzip)
+        run: npm run bundle
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 

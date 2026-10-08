@@ -11,10 +11,10 @@ Planning documents at the repo root (`PRD.md`, `SRS.md`, `MASTER_PLAN.md`, `API_
 | Framework | Next.js 15.5 (App Router, Turbopack) |
 | Language | JavaScript (ESM, `jsconfig.json` path alias `@/*`) |
 | Styling | Tailwind CSS v4 + CSS variables in `app/globals.css` |
-| Motion | `motion` v14 (`Reveal`, `Stagger`, `Magnetic`) |
+| Motion | CSS transitions + `IntersectionObserver` (own `Reveal`/`Stagger`/`Magnetic`, no animation library) |
 | Icons | `lucide-react` + `simple-icons` (brand glyphs) |
 | Validation | `zod` v4 (server), mirrored hand-rolled checks in the form (client) |
-| CI | GitHub Actions (lint + Vitest + build + Playwright e2e) |
+| CI | GitHub Actions (lint + Vitest + build + bundle budget + Playwright e2e) + Lighthouse CI |
 
 ## Getting started
 
@@ -56,11 +56,13 @@ components/
   layout/             # Navbar, MobileMenu (lazy), Footer, ThemeToggle
   sections/           # Hero, About, Skills, Projects, Experience, Certifications, Contact
   ui/                 # Button, Badge, Card, Tag, Field, Timeline, Toast, BrandIcon...
-  motion/             # Reveal, Stagger, Magnetic
+  motion/             # Reveal, Stagger, Magnetic (CSS + IntersectionObserver)
   visuals/            # NetworkCanvas (pauses off-screen / reduced motion)
   providers/          # ThemeProvider (dark default, honors prefers-color-scheme)
 content/              # ALL site copy — edit here, never inside components
 lib/                  # schemas (zod), api envelopes, ratelimit, turnstile, email
+tests/                # unit (Vitest) + e2e (Playwright, incl. axe a11y)
+scripts/              # bundle budget measurement (npm run bundle)
 public/cv/            # Bereket_Elias_CV.pdf (served via /api/resume/download)
 ```
 
@@ -96,11 +98,11 @@ Budget from `MASTER_PLAN.md` §8: home JS ≤ 150 kB gzip.
 
 | Measurement | Value |
 |---|---|
-| `next build` — home First Load JS | 183 kB (gzip) |
-| Measured transfer, modern browsers | ~179 kB gzip (the 110 kB legacy `nomodule` polyfill is skipped) |
-| Breakdown | Next runtime ~66 kB · React 19 ~58 kB · app + `motion` + icons ~56 kB |
+| `npm run bundle` — home First Load JS (gzip, from build manifest) | **146.2 kB ≤ 150 kB budget** |
+| Root cause of a prior ~29 kB overrun | `motion` (~33 kB gzip) — replaced with CSS transitions + `IntersectionObserver` |
+| Legacy `nomodule` polyfill (~110 kB raw) | Skipped by modern browsers; not counted |
 
-**~29 kB over budget.** The largest reducible cost is `motion` (~25–30 kB); everything else is framework baseline. See "Recommended follow-ups" below.
+`npm run bundle` re-measures and fails if over 150 kB — wired into CI after `npm run build`.
 
 ## Deploy (Vercel)
 
@@ -114,16 +116,18 @@ Budget from `MASTER_PLAN.md` §8: home JS ≤ 150 kB gzip.
 1. **JavaScript, not TypeScript** — explicit project decision; all `.ts/.tsx` converted to `.js/.jsx`, typecheck step removed from CI.
 2. **Projects as plain JS, not MDX** — `content/projects.js` instead of an MDX/contentlayer pipeline: zero extra dependencies, same authoring shape (frontmatter fields → object fields). Switching to MDX later is additive.
 3. **Client validation is hand-rolled** — `zod` stays server-only to keep it out of the client bundle; the form mirrors `ContactInput` rules with identical messages (`lib/schemas.js` is the server source of truth).
-4. **Not built (out of scope for this pass)**: blog, Command Palette, Topology viewer, axe/Lighthouse CI, Prettier/Husky/Commitlint.
+4. **Not built (out of scope for this pass)**: blog, Command Palette, Topology viewer, Prettier/Husky/Commitlint.
 
 ## Testing
 
 - **Unit (Vitest)** — `npm test`: zod schemas, in-memory + Upstash rate limiter, API envelope/IP hashing, contact route (validation, honeypot, delivery, 429 + `Retry-After`), resume download route.
-- **E2E (Playwright)** — `npm run test:e2e`: desktop (1280px) + mobile (Pixel 7) projects; hero/nav/theme/404, mobile menu → `/resume`, contact validation + successful submit, CV download, resume page print/PDF controls. Skips desktop-only/mobile-only cases by viewport.
+- **E2E (Playwright)** — `npm run test:e2e`: desktop (1280px) + mobile (Pixel 7) projects; hero/nav/theme/404, mobile menu → `/resume`, contact validation + successful submit, CV download, resume page print/PDF controls, reveal-animation completion. Skips desktop-only/mobile-only cases by viewport.
+- **A11y (axe, in E2E)** — `tests/e2e/a11y.spec.js` scans home, `/resume`, a case study, and the 404 in **both themes** (light + dark) with reduced-motion emulation; fails on any serious/critical violation. Fixed findings: accent/accent-2/warn tokens for WCAG AA, hint text opacity, in-text link underline.
+- **Bundle budget** — `npm run bundle` fails CI if home JS > 150 kB gzip.
+- **Lighthouse CI** — `.github/workflows/lighthouse.yml` audits `/` and `/resume` on PRs with `lighthouse-budgets.json` (script transfer ≤ 160 KB); accessibility is an error-level assertion.
 
 ## Recommended follow-ups
 
-1. **Close the 29 kB gap**: replace `motion` with CSS transitions + `IntersectionObserver` (largest win), or accept the framework baseline and re-baseline the budget to 180 kB.
-2. **Fill `TODO(owner)` content**: social URLs, project repo/demo links, cover images, learnings text — verified facts only.
-3. **Wire real keys at launch** (env vars already supported): `RESEND_API_KEY`, Turnstile keys, Upstash Redis URL+token — otherwise tests/site degrade gracefully (console log, skipped challenge, in-memory limiter).
-4. **Verify real-device rendering** (the plan calls out low-end Android) and add axe + Lighthouse CI with budgets in PRs.
+1. **Fill `TODO(owner)` content**: social URLs, project repo/demo links, cover images, learnings text — verified facts only.
+2. **Wire real keys at launch** (env vars already supported): `RESEND_API_KEY`, Turnstile keys, Upstash Redis URL+token — otherwise tests/site degrade gracefully (console log, skipped challenge, in-memory limiter).
+3. **Verify real-device rendering** (the plan calls out low-end Android) — Lighthouse CI scores can be checked in PR comments once `LHCI_GITHUB_APP_TOKEN` is configured for permanent report links.
