@@ -70,6 +70,32 @@ test("unknown route shows branded 404", async ({ page }) => {
   await expect(page.getByText("Page not found")).toBeVisible();
 });
 
+test("certificate viewer opens dialog and navigates scans", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const section = page.locator("#certifications");
+  const openButton = section.getByRole("button", {
+    name: "View certificate",
+  });
+  await openButton.click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  await expect(
+    dialog.getByText("Certificate 1 of 3"),
+  ).toBeVisible();
+  await dialog.getByRole("button", { name: "Next certificate" }).click();
+  await expect(
+    dialog.getByText("Certificate 2 of 3"),
+  ).toBeVisible();
+  await dialog.getByRole("button", { name: "Previous certificate" }).click();
+  await expect(
+    dialog.getByText("Certificate 1 of 3"),
+  ).toBeVisible();
+  await dialog.getByRole("button", { name: "Close" }).click();
+  await expect(dialog).not.toBeVisible();
+});
+
 test("mobile menu opens and navigates", async ({ page }) => {
   await page.goto("/");
   const burger = page.getByRole("button", { name: "Open menu" });

@@ -2,6 +2,7 @@ import { Award, ExternalLink, ShieldCheck } from "lucide-react";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/motion/reveal";
+import { CertificateViewer } from "@/components/ui/certificate-viewer";
 import { certifications } from "@/content/certifications";
 
 export function Certifications() {
@@ -29,6 +30,12 @@ export function Certifications() {
 
                 <h3 className="mt-4 text-lg">{cert.title}</h3>
                 <p className="mt-1 text-sm text-muted">{cert.issuer}</p>
+
+                {cert.images?.length > 0 && (
+                  <div className="mt-4">
+                    <CertificateViewer images={cert.images} />
+                  </div>
+                )}
 
                 <div className="mt-auto flex items-center justify-between gap-3 pt-5">
                   {cert.url ? (
