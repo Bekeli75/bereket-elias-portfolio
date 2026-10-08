@@ -187,7 +187,7 @@ export default async function ProjectPage({ params }) {
           Want the full picture?{" "}
           <a
             href={`/cv/${encodeURIComponent("Bereket_Elias_CV.pdf")}`}
-            className="text-accent transition-colors hover:text-ink"
+            className="text-accent underline underline-offset-4 transition-colors hover:text-ink"
           >
             Download {profile.name.split(" ")[0]}&apos;s CV
           </a>

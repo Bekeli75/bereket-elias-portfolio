@@ -27,7 +27,7 @@ function ProjectCover({ project }) {
       <span className="absolute left-3 top-3">
         <Badge tone="neutral">{project.category}</Badge>
       </span>
-      <span className="absolute bottom-3 right-3 font-mono text-[0.65rem] uppercase tracking-widest text-muted/70">
+      <span className="absolute bottom-3 right-3 font-mono text-[0.65rem] uppercase tracking-widest text-muted">
         {project.cover ? "" : "screenshot pending"}
       </span>
     </div>

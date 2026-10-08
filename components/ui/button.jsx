@@ -5,7 +5,7 @@ const base =
 
 const variants = {
   primary:
-    "bg-accent text-white shadow-[0_8px_24px_-10px_var(--accent)] hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0",
+    "bg-accent-solid text-white shadow-[0_8px_24px_-10px_var(--accent-solid)] hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0",
   secondary:
     "border border-line bg-surface text-ink hover:border-accent hover:text-accent",
   ghost: "text-muted hover:text-accent",

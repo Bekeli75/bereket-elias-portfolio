@@ -20,7 +20,7 @@ function FieldWrapper({ label, error, hint, htmlFor, children }) {
           {error}
         </p>
       ) : (
-        hint && <p className="text-xs text-muted/80">{hint}</p>
+        hint && <p className="text-xs text-muted">{hint}</p>
       )}
     </div>
   );
