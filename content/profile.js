@@ -11,9 +11,8 @@ export const profile = {
     label: "Open to internships · Class of 2027",
   },
   socials: {
-    // TODO(owner): add profile URLs
-    github: "",
-    linkedin: "",
-    telegram: "",
+    github: "https://github.com/Bekeli75",
+    linkedin: "http://www.linkedin.com/in/-elias-65826530/a",
+    telegram: "https://t.me/bekeli75",
   },
 };
