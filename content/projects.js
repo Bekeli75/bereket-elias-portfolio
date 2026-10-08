@@ -81,6 +81,29 @@ export const projects = [
       "Labs completed as coursework; publishing the diagrams and full write-ups is still in progress.",
     learnings: "", // TODO(owner)
   },
+  {
+    slug: "property-management-software",
+    title: "Propentra — Property Management Software",
+    summary:
+      "Full-stack property management system: Next.js frontend with a Laravel REST API handling property, unit, tenant, and lease management plus rent, maintenance, and financial workflows.",
+    category: "Software",
+    tech: ["Next.js", "React", "Laravel", "MySQL"], // TODO(owner): confirm exact stack
+    cover: null, // TODO(owner): project screenshot
+    featured: false,
+    status: "completed", // TODO(owner): confirm
+    links: {
+      repo: "https://github.com/Bekeli75/Property-Management-Software",
+      demo: "",
+    },
+    order: 5,
+    problem:
+      "Property owners, managers, and tenants need one system to manage properties, units, leases, rent, and maintenance requests instead of tracking them separately.",
+    approach:
+      "Split into a Next.js frontend and a Laravel REST API backed by MySQL, with Sanctum authentication and role-based access for owners, managers, tenants, and administrators. Covers property, unit, tenant, and lease management, rent and payment processing, maintenance requests, and financial reporting.",
+    result:
+      "A working web application wired end-to-end with a REST API under /api/v1 and Chapa payment integration (test environment, ETB).",
+    learnings: "", // TODO(owner)
+  },
 ];
 
 export function sortedProjects() {
