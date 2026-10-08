@@ -6,7 +6,7 @@ const CV_PATH = "/cv/Bereket_Elias_CV.pdf";
 
 export async function GET(request) {
   const ipKey = hashIp(getClientIp(request));
-  const limit = rateLimit({
+  const limit = await rateLimit({
     key: `resume:ip:${ipKey}`,
     limit: 60,
     windowMs: 60 * 60 * 1000,
