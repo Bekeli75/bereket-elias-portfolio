@@ -98,7 +98,7 @@ Budget from `MASTER_PLAN.md` §8: home JS ≤ 150 kB gzip.
 
 | Measurement | Value |
 |---|---|
-| `npm run bundle` — home First Load JS (gzip, from build manifest) | **146.2 kB ≤ 150 kB budget** |
+| `npm run bundle` — home First Load JS (gzip, from build manifest) | **147.6 kB ≤ 150 kB budget** |
 | Root cause of a prior ~29 kB overrun | `motion` (~33 kB gzip) — replaced with CSS transitions + `IntersectionObserver` |
 | Legacy `nomodule` polyfill (~110 kB raw) | Skipped by modern browsers; not counted |
 
