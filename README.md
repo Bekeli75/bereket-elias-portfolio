@@ -14,7 +14,7 @@ Planning documents at the repo root (`PRD.md`, `SRS.md`, `MASTER_PLAN.md`, `API_
 | Motion | `motion` v14 (`Reveal`, `Stagger`, `Magnetic`) |
 | Icons | `lucide-react` + `simple-icons` (brand glyphs) |
 | Validation | `zod` v4 (server), mirrored hand-rolled checks in the form (client) |
-| CI | GitHub Actions (lint + build) |
+| CI | GitHub Actions (lint + Vitest + build + Playwright e2e) |
 
 ## Getting started
 
@@ -24,7 +24,7 @@ cp .env.example .env.local   # optional: every variable has a working default
 npm run dev       # http://localhost:3000
 ```
 
-Other scripts: `npm run build` (production build), `npm run start` (serve build), `npm run lint` (ESLint).
+Other scripts: `npm run build` (production build), `npm run start` (serve build), `npm run lint` (ESLint), `npm run test` (Vitest unit tests), `npm run test:e2e` (Playwright against a production build).
 
 **The site runs with zero configuration.** Missing backend credentials degrade gracefully:
 
@@ -78,7 +78,7 @@ All responses follow `API_CONTRACT.md`: `{ ok: true, data }` / `{ ok: false, err
 |---|---|
 | `GET /api/health` | Liveness, `Cache-Control: no-store` |
 | `POST /api/contact` | zod validation → honeypot (silent 200) → Turnstile → rate limit (5/hr/IP, 20/day, hashed IPs, `Retry-After`) → Resend or console log |
-| `GET /api/resume/download?source=…` | Logs the download event, 302 → `/cv/Bereket_Elias_CV.pdf` |
+| `GET /api/resume/download?source=…` | Logs the download event, 302 → `/cv/Bereket_Elias_CV.pdf` (rate limited 60/hr/IP) |
 | `GET /api/projects`, `GET /api/projects/[slug]` | JSON read API for the same project data |
 
 Content types other than JSON get `415`; oversized bodies `413`; unknown fields are rejected with per-field `details`.
@@ -114,13 +114,16 @@ Budget from `MASTER_PLAN.md` §8: home JS ≤ 150 kB gzip.
 1. **JavaScript, not TypeScript** — explicit project decision; all `.ts/.tsx` converted to `.js/.jsx`, typecheck step removed from CI.
 2. **Projects as plain JS, not MDX** — `content/projects.js` instead of an MDX/contentlayer pipeline: zero extra dependencies, same authoring shape (frontmatter fields → object fields). Switching to MDX later is additive.
 3. **Client validation is hand-rolled** — `zod` stays server-only to keep it out of the client bundle; the form mirrors `ContactInput` rules with identical messages (`lib/schemas.js` is the server source of truth).
-4. **Not built (out of scope for this pass)**: blog, `/resume` print page, Command Palette, Topology viewer, tests (Vitest/Playwright/axe/Lighthouse CI), Prettier/Husky/Commitlint.
+4. **Not built (out of scope for this pass)**: blog, Command Palette, Topology viewer, axe/Lighthouse CI, Prettier/Husky/Commitlint.
+
+## Testing
+
+- **Unit (Vitest)** — `npm test`: zod schemas, in-memory + Upstash rate limiter, API envelope/IP hashing, contact route (validation, honeypot, delivery, 429 + `Retry-After`), resume download route.
+- **E2E (Playwright)** — `npm run test:e2e`: desktop (1280px) + mobile (Pixel 7) projects; hero/nav/theme/404, mobile menu → `/resume`, contact validation + successful submit, CV download, resume page print/PDF controls. Skips desktop-only/mobile-only cases by viewport.
 
 ## Recommended follow-ups
 
 1. **Close the 29 kB gap**: replace `motion` with CSS transitions + `IntersectionObserver` (largest win), or accept the framework baseline and re-baseline the budget to 180 kB.
 2. **Fill `TODO(owner)` content**: social URLs, project repo/demo links, cover images, learnings text — verified facts only.
-3. **Add automated tests**: unit (schemas, rate limiter), E2E (contact flow, CV download, theme toggle), axe a11y pass — the plan's Phase 6 definition of done.
-4. **Swap in-memory rate limiting for Upstash** before launch (env vars already supported) so limits survive serverless restarts.
-5. **Add `Resume` page** (`/resume`, print-friendly) linked from the hero CTA — planned but not built.
-6. **Verify real-device rendering** (the plan calls out low-end Android) and run Lighthouse CI with budgets in PRs.
+3. **Wire real keys at launch** (env vars already supported): `RESEND_API_KEY`, Turnstile keys, Upstash Redis URL+token — otherwise tests/site degrade gracefully (console log, skipped challenge, in-memory limiter).
+4. **Verify real-device rendering** (the plan calls out low-end Android) and add axe + Lighthouse CI with budgets in PRs.
