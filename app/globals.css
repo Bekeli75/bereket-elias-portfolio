@@ -239,4 +239,55 @@
   .skip-link:focus-visible {
     transform: translateY(0);
   }
+
+  /* ----------------------------------------------------- resume / print */
+  @media print {
+    html {
+      scroll-padding-top: 0;
+    }
+
+    header,
+    footer,
+    .skip-link,
+    .print-hide {
+      display: none !important;
+    }
+
+    :root,
+    :root[data-theme="dark"] {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #f1f3f7;
+      --border: rgba(10, 15, 25, 0.2);
+      --text: #111827;
+      --muted: #4b5563;
+      --accent: #1d4ed8;
+      --accent-2: #0f766e;
+      color-scheme: light;
+    }
+
+    body {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .container-page {
+      padding-inline: 0;
+    }
+
+    .print-block {
+      margin-top: 1.75rem;
+      break-inside: avoid;
+    }
+
+    .print-block h2 {
+      font-size: 1.1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.25rem;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
 }
