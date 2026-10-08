@@ -1,42 +1,36 @@
 "use client";
 
-import { useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-} from "motion/react";
+import { useRef, useState } from "react";
+import { useReducedMotion } from "@/components/motion/use-reduced-motion";
 
 export function Magnetic({ children, className, strength = 0.25 }) {
   const reduceMotion = useReducedMotion();
   const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 180, damping: 16, mass: 0.4 });
-  const springY = useSpring(y, { stiffness: 180, damping: 16, mass: 0.4 });
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   if (reduceMotion) {
     return <div className={className}>{children}</div>;
   }
 
   return (
-    <motion.div
+    <div
       ref={ref}
       className={className}
-      style={{ x: springX, y: springY }}
+      style={{
+        transform: `translate(${offset.x}px, ${offset.y}px)`,
+        transition: "transform 220ms cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
       onPointerMove={(event) => {
         if (event.pointerType !== "mouse" || !ref.current) return;
         const rect = ref.current.getBoundingClientRect();
-        x.set((event.clientX - rect.left - rect.width / 2) * strength);
-        y.set((event.clientY - rect.top - rect.height / 2) * strength);
+        setOffset({
+          x: (event.clientX - rect.left - rect.width / 2) * strength,
+          y: (event.clientY - rect.top - rect.height / 2) * strength,
+        });
       }}
-      onPointerLeave={() => {
-        x.set(0);
-        y.set(0);
-      }}
+      onPointerLeave={() => setOffset({ x: 0, y: 0 })}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

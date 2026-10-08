@@ -5,6 +5,9 @@ test("home renders hero and all sections", async ({ page }) => {
   await expect(
     page.getByRole("heading", { level: 1, name: /Bereket Elias/i }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 1, name: /Bereket Elias/i }),
+  ).toHaveCSS("opacity", "1");
   for (const id of [
     "about",
     "skills",
@@ -16,6 +19,14 @@ test("home renders hero and all sections", async ({ page }) => {
     await expect(page.locator(`#${id}`)).toBeVisible();
   }
   await expect(page.locator(".skip-link")).toHaveCount(1);
+});
+
+test("reveal animations complete when scrolled into view", async ({ page }) => {
+  await page.goto("/");
+  const reveal = page.locator("#about .reveal").first();
+  await expect(reveal).toBeVisible();
+  await reveal.scrollIntoViewIfNeeded();
+  await expect(reveal).toHaveCSS("opacity", "1");
 });
 
 test("navbar links scroll to sections", async ({ page }) => {
